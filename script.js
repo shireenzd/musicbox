@@ -101,12 +101,17 @@ function highlightClickedButton(index){
         }
 
         function userWon(){
+            const audio = new Audio();
             if(areArraysEqual()===true){
                 updateMessage('you won')
+                audio.src = 'audios/6QK3J9X-level-up.mp3'
+                audio.play();
                 
             }
             else{
                 updateMessage('you lost')
+                audio.src = 'audios/mixkit-losing-bleeps-2026.wav'
+                audio.play();
             }
         }
 
