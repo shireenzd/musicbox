@@ -11,35 +11,85 @@
                 
                 
     <title>Document</title>
+    <style>
+        .message{
+            font-family: 'Rubik Wet Paint', sans-serif;
+            color: aliceblue;
+        }
+        .game-container{
+            width:300px;
+            height: 300px;
+        }
+        button{
+            height: 50px;
+            width: 50px;
+            border-radius: 20px;
+            font-family: 'Agbalumo', sans-serif;
+            border: 1px solid black;
+        }
+        .user-info{
+            color: white;
+            font-family: 'Rubik Wet Paint', sans-serif;
+        }
+        .highlight {
+                box-shadow:  5px 5px #bbc58f;
+            }
+         #countdown {
+                font-size: 36px;
+                font-weight: bold;
+                opacity:  0.5;
+         }
+         .zoom-in-text {
+            font-size: 300px;
+            animation: zoomInAnimation 0.7s ease-in-out infinite; 
+        }
+
+        @keyframes zoomInAnimation {
+            0% {
+                transform: scale(0.1);
+            }
+            50% {
+                transform: scale(0.7); 
+            }
+            100% {
+                transform: scale(0.4);
+            }
+        }
+
+      
+    </style>
 </head>
-<style>
-    .message{
-        font-family: 'Rubik Wet Paint', sans-serif;
-        color: aliceblue;
-    }
-    .game-container{
-        width:300px;
-        height: 300px;
-    }
-    button{
-        height: 50px;
-        width: 50px;
-        border-radius: 20px;
-        font-family: 'Agbalumo', sans-serif;
-        border: 1px solid black;
-    }
-</style>
-<body class="bg-black">
+<body class="bg-black relative">
+    <div id="countdown" class=" absolute flex justify-center items-center h-screen w-screen hidden bg-red-300"> 
+        <span id="timer" class="zoom-in-text">3</span> 
+        <audio id="audio" src="audios\mixkit-soft-bell-countdown-919.wav" preload="auto"></audio>
+    </div>
+    <div class="onload-page flex justify-center items-center w-screen h-screen flex flex-col gap-5 hidden">
+            <label for="username" class="text-white">enter your username:</label>
+            <input type="text" name="username" id="username" class="rounded-md">
+            <p class="error-text text-red-300 hidden">please enter a username to continue</p>
+            <button class="bg-red-300 p-2 rounded-md" onclick="nextpage()">next</button>
+    </div>
 
     <main class="flex flex-col justify-center items-center ">
         <div>
-            <h1 class="p-16 text-4xl message"> Start !</h1>
+            <h1 class="p-16 text-4xl message cursor-pointer " onclick="startGame()"> Start !</h1>
+        </div>
+        <div class="user-info absolute flex flex-col top-12 left-32">
+            <div class="flex gap-5">
+                <h2>username:</h2>
+                <p class="user-value"></p>
+            </div>
+            <div class="flex gap-5">
+                <p>level:</p>
+                <p class="level-value ">0</p>
+            </div>
         </div>
         <div class="game-container flex flex-wrap justify-center items-center bg-white rounded-xl py-10">
-            <button class="w-20 h-20 text-center bg-green-200 m-4">green 0</button>
-            <button class="w-20 h-20 text-center bg-red-500 m-4">red 1</button>
-            <button class="w-20 h-20 text-center bg-yellow-400 m-4">yellow 2</button>
-            <button class="w-20 h-20 text-center bg-blue-500 m-4">blue 3</button>
+            <button class="w-20 h-20 text-center bg-green-200 m-4 game-box" onclick="highlightClickedButton(0)">green 0</button>
+            <button class="w-20 h-20 text-center bg-red-500 m-4 game-box" onclick="highlightClickedButton(1)">red 1</button>
+            <button class="w-20 h-20 text-center bg-yellow-400 m-4 game-box" onclick="highlightClickedButton(2)">yellow 2</button>
+            <button class="w-20 h-20 text-center bg-blue-500 m-4 game-box" onclick="highlightClickedButton(3)">blue 3</button>
         </div>
     </main>
 
