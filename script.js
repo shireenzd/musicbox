@@ -1,33 +1,137 @@
+let sequence = [];
+let userSequence = [];
+let level = 1;
+let levelUpdate = document.querySelector('.level-value')
 function startGame() {
-
-    highlightRandomButton()
-
-    updateMessage('game started 👾')
-    document.querySelector('.level-value').innerText = 1
-    
+    resetGame();
+   setTimeout(()=>{playSequence()},2500) ;
     updateCountdown()
-    
 }
 
-function updateMessage(change) {
-    let message = document.querySelector('.message')
-    message.innerText = change
+function resetGame() {
+    sequence = [];
+    userSequence = [];
+    level = 1;
 }
+
+function playSequence() {
+    updateMessage(` Level ${level}`);
+    levelUpdate.innerText = level
+    disableButtons();
+
+    for (let i = 0; i < level; i++) {
+        const randomButton = getRandomButton();
+        sequence.push(randomButton);
+        setTimeout(() => {
+            highlightButton(randomButton);
+            setTimeout(() => unhighlightButton(randomButton), 500);
+        }, i * 1000);
+    }
+
+    setTimeout(() => {
+        updateMessage("Your turn!");
+        enableButtons();
+    }, level * 1000);
+}
+
+function getRandomButton() {
+    const buttons = ['A', 'B', 'C', 'D'];
+    const randomIndex = Math.floor(Math.random() * buttons.length);
+    return buttons[randomIndex];
+}
+
+
+const audioElement = document.getElementById('audio');
+let countdownValue = 3;
+function updateCountdown() {
+    document.querySelector('#countdown').classList.remove('hidden')
+    const timerElement = document.getElementById('timer');
+    timerElement.textContent = countdownValue;
+
+    if (countdownValue === 0) {
+        document.querySelector('#countdown').classList.add('hidden')
+    } else {
+        countdownValue--;
+        setTimeout(updateCountdown, 700);
+        audioElement.play();
+    }
+}
+
+function highlightButton(button) {
+    const buttonElement = document.getElementById(button);
+    if (buttonElement) {
+        buttonElement.classList.add('highlight');
+    }
+}
+
+function unhighlightButton(button) {
+    const buttonElement = document.getElementById(button);
+    if (buttonElement) {
+       
+        buttonElement.classList.remove('highlight');
+    }
+}
+
+function enableButtons() {
+    const buttons = document.querySelectorAll('.game-button');
+    buttons.forEach(button => button.disabled = false);
+}
+
+function disableButtons() {
+    const buttons = document.querySelectorAll('.game-button');
+    buttons.forEach(button => button.disabled = true);
+}
+
+function checkUserSequence() {
+    if (sequence.length === userSequence.length) {
+        if (userSequence.join('') === sequence.join('')) {
+            updateMessage(`Correct! Level ${++level}`);
+             audio.src = 'audios/mixkit-achievement-bell-600.wav'
+        audio.play();
+            userSequence = [];
+            setTimeout(playSequence, 1000);
+        } else {
+            audio.src = 'audios/mixkit-losing-bleeps-2026.wav'
+            audio.play();
+            updateMessage('game over..start again');
+            resetGame();
+        }
+    }
+}
+
+
+function updateMessage(message) {
+    document.querySelector('.message').innerText = message;
+}
+
+function handleButtonClick(button) {
+    userSequence.push(button);
+    highlightButton(button);
+    setTimeout(() => {
+        unhighlightButton(button);
+        checkUserSequence();
+    }, 500);
+}
+
+// Dynamically create buttons
+const buttonContainer = document.getElementById('game-container');
+const buttonColors = [ '#33ff00','#ff0000', '#ffff00', '#0080ff'];
+['A', 'B', 'C', 'D'].forEach((button, index )=> {
+    const buttonElement = document.createElement('button');
+    buttonElement.className = 'game-button';
+    buttonElement.id = button;
+    buttonElement.innerText = button;
+    buttonElement.style.backgroundColor = buttonColors[index];
+    buttonElement.addEventListener('click', () => handleButtonClick(button));
+    buttonContainer.appendChild(buttonElement);
+});
+
+
 
 let userText = document.querySelector('#username')
 function enterUsername() {
     document.querySelector('.onload-page').classList.remove('hidden')
-
-
 }
-
-
-window.addEventListener('load', enterUsername)
-
-let correctSteps = []
-let userSteps = []
-
-
 
 function nextpage() {
     if (userText.value == '') {
@@ -39,98 +143,4 @@ function nextpage() {
     document.querySelector('.user-value').innerText = localStorage.getItem('value')
 }
 
-function highlightRandomButton() {
-    let buttons = document.querySelectorAll('.game-box')
-    
-    buttons.forEach(button => {
-        button.classList.remove('highlight');
-    });
-    
-    setTimeout(() => {
-    const randomIndex = Math.floor(Math.random() * buttons.length);
-    correctSteps.push(randomIndex)
-    const randomButton = buttons[randomIndex];
-    randomButton.classList.add('highlight')
-    setTimeout(() => {
-        randomButton.classList.remove('highlight');
-    }, 500)
-    },3500)
-
-
-}
-
-
-function highlightClickedButton(index){
-    let buttons = document.querySelectorAll('.game-box')
-
-    buttons.forEach(button => {
-        button.classList.remove('highlight');
-    });
-
-    const clickedButton = document.querySelectorAll('.game-box')[index];
-            clickedButton.classList.add('highlight');
-
-            setTimeout(() => {
-                clickedButton.classList.remove('highlight');
-            }, 1000);
-            
-            userSteps.push(index)
-
-            areArraysEqual()
-            
-            userWon()
-
-          
-        }
-
-        function areArraysEqual() {
-            if (correctSteps.length !== userSteps.length) {
-                return false;
-            }
-
-            
-            for (let i = 0; i < correctSteps.length; i++) {
-                if (correctSteps[i] !== userSteps[i]) {
-                    return false;
-                }
-                console.log(true)
-            }
-
-            return true;
-            console.log(true)
-        }
-
-        function userWon(){
-            const audio = new Audio();
-            if(areArraysEqual()===true){
-                updateMessage('you won')
-                audio.src = 'audios/6QK3J9X-level-up.mp3'
-                audio.play();
-                
-            }
-            else{
-                updateMessage('you lost')
-                audio.src = 'audios/mixkit-losing-bleeps-2026.wav'
-                audio.play();
-            }
-        }
-
-
-        const audioElement = document.getElementById('audio');
-        
-        let countdownValue = 3;
-        function updateCountdown() {
-            document.querySelector('#countdown').classList.remove('hidden')
-            const timerElement = document.getElementById('timer');
-            timerElement.textContent = countdownValue;
-            
-            if (countdownValue === 0) {
-                document.querySelector('#countdown').classList.add('hidden')
-            } else {
-                countdownValue--;
-                setTimeout(updateCountdown, 700);
-                audioElement.play();
-            }
-        }
-
-   
+window.addEventListener('load', enterUsername)

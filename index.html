@@ -16,16 +16,18 @@
             font-family: 'Rubik Wet Paint', sans-serif;
             color: aliceblue;
         }
-        .game-container{
+        #game-container{
             width:300px;
             height: 300px;
         }
         button{
-            height: 50px;
-            width: 50px;
+            height: 100px;
+            width: 100px;
             border-radius: 20px;
             font-family: 'Agbalumo', sans-serif;
             border: 1px solid black;
+             text-align:center;
+              margin: 10px; 
         }
         .user-info{
             color: white;
@@ -68,7 +70,7 @@
             <label for="username" class="text-white">enter your username:</label>
             <input type="text" name="username" id="username" class="rounded-md">
             <p class="error-text text-red-300 hidden">please enter a username to continue</p>
-            <button class="bg-red-300 p-2 rounded-md" onclick="nextpage()">next</button>
+            <button class="bg-red-300 p-2 h-14 w-20 rounded-md" onclick="nextpage()">next</button>
     </div>
 
     <main class="flex flex-col justify-center items-center ">
@@ -85,15 +87,12 @@
                 <p class="level-value ">0</p>
             </div>
         </div>
-        <div class="game-container flex flex-wrap justify-center items-center bg-white rounded-xl py-10">
-            <button class="w-20 h-20 text-center bg-green-200 m-4 game-box" onclick="highlightClickedButton(0)">green 0</button>
-            <button class="w-20 h-20 text-center bg-red-500 m-4 game-box" onclick="highlightClickedButton(1)">red 1</button>
-            <button class="w-20 h-20 text-center bg-yellow-400 m-4 game-box" onclick="highlightClickedButton(2)">yellow 2</button>
-            <button class="w-20 h-20 text-center bg-blue-500 m-4 game-box" onclick="highlightClickedButton(3)">blue 3</button>
+        <div class=" flex flex-wrap justify-center items-center bg-white rounded-xl py-10" id="game-container">
+            
         </div>
     </main>
 
 
-    <script src="script.js"></script>
+    <script src="index.js"></script>
 </body>
 </html>
