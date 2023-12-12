@@ -116,12 +116,14 @@ function handleButtonClick(button) {
 // Dynamically create buttons
 const buttonContainer = document.getElementById('game-container');
 const buttonColors = [ '#33ff00','#ff0000', '#ffff00', '#0080ff'];
+// const buttonsAudio=['audios/green.mp3','audios/red.mp3','audios/yellow.mp3','audios/blue.mp3']
 ['A', 'B', 'C', 'D'].forEach((button, index )=> {
     const buttonElement = document.createElement('button');
     buttonElement.className = 'game-button';
     buttonElement.id = button;
     buttonElement.innerText = button;
     buttonElement.style.backgroundColor = buttonColors[index];
+    // buttonElement.style.audio = buttonsAudio[index]
     buttonElement.addEventListener('click', () => handleButtonClick(button));
     buttonContainer.appendChild(buttonElement);
 });
